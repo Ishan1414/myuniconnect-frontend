@@ -1,24 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { HashRouter } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router";
+import { useDispatch } from "react-redux";
+import * as client from "./user/client.ts";
+import { setUser } from "./user/reducer.ts";
+import Auth from "./user/auth.tsx";
+import { useEffect } from "react";
 
 function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const account = await client.profile();
+        return account;
+      } catch (e) {
+        localStorage.removeItem("token");
+      }
+    };
+    fetchProfile().then((e) => {
+      if (e != null) {
+        dispatch(setUser(e));
+      }
+    });
+  }, []);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <HashRouter>
+      <Routes>
+        <Route path="/signin" element={<Auth />} />
+
+      </Routes>
+    </HashRouter>
   );
 }
 

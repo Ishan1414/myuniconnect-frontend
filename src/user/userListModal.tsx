@@ -3,6 +3,7 @@ import * as userClient from './client';
 import { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import { IoMdCloseCircleOutline } from "react-icons/io";
+import React from 'react';
 
 const UserListModal = ({ isOpen, onClose, userList }: { isOpen: boolean, onClose: any, userList: any }) => {
     const [users, setUsers] = useState([])
